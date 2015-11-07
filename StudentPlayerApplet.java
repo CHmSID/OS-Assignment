@@ -6,9 +6,8 @@ import java.io.*;
 
 class BoundedBuffer {
   private byte [][] buffer;                       //an array of fixed size.
-  private int occupied, nextIn, ins,outs =0;
-  private int nextOut = 0;
-  private int size;
+  private int occupied, nextIn,nextOut, ins,outs =0;
+  private int size;                               //didn't use it yet.
   private boolean dataAvailable = false;          //false = buffer is empty.
   private boolean roomAvailable = true;           //true  = buffer is empty.
   
