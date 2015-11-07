@@ -89,6 +89,8 @@ class Producer implements Runnable {
     
       // Insert chunk into the buffer
       player.getBuffer().insertChunk(chunk);
+        
+    
     }
   
     player.setFinished(true);
@@ -118,9 +120,10 @@ class Consumer implements Runnable{
       byte[] data = buffer.removeChunk();
       line.write(data, 0, data.length);
     }
-                   
+     
     System.out.println("Consumer says byebye");
   }
+    
 }
 
   class Player extends Panel implements Runnable {
@@ -137,7 +140,6 @@ class Consumer implements Runnable{
     private int oneSecond;
     private boolean isPlaying;
     private boolean finished;
-    
 
     public Player(String filename) {
 
@@ -159,6 +161,8 @@ class Consumer implements Runnable{
           if (e.getActionCommand().equals("x")) {
             isPlaying = false;
           }
+            
+         
           
           textfield.setText("");
         }
@@ -254,6 +258,7 @@ class Consumer implements Runnable{
     public void setFinished(boolean status) {
       finished = status;
     }
+
 }
 
 public class StudentPlayerApplet extends Applet
