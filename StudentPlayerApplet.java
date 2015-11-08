@@ -158,12 +158,9 @@ class Consumer implements Runnable{
           textarea.append("You said: " + e.getActionCommand() + "\n");
           
           if (e.getActionCommand().equals("x")) {
-            isPlaying = false;
             setPlaying(false);
           }
             
-         
-          
           textfield.setText("");
         }
       });
