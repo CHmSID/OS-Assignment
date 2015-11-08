@@ -5,13 +5,13 @@ import java.awt.event.*;
 import java.io.*;
 
 class BoundedBuffer {
-  private byte [][] buffer;                       //an array of fixed size.
+  //an array of fixed size.
+  private byte [][] buffer;
   private int occupied, nextIn,nextOut, ins,outs =0;
-  private int size;                               //didn't use it yet.
   private boolean dataAvailable = false;          //false = buffer is empty.
   private boolean roomAvailable = true;           //true  = buffer is empty.
   
-  public BoundedBuffer(Player player){            //getting the one second size for the array.
+  public BoundedBuffer(Player player){
     buffer = new byte [10][player.sizeOneSecond()];
   }
   
