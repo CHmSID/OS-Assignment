@@ -89,8 +89,6 @@ class Producer implements Runnable {
     
       // Insert chunk into the buffer
       player.getBuffer().insertChunk(chunk);
-        
-    
     }
   
     player.setFinished(true);
@@ -115,13 +113,14 @@ class Consumer implements Runnable{
 
   public void run(){
     
-    while(/*player.isPlaying() && */!player.isFinished()) {
+    while(player.isPlaying() && !player.isFinished()) {
       
       byte[] data = buffer.removeChunk();
       line.write(data, 0, data.length);
     }
      
     System.out.println("Consumer says byebye");
+    buffer.removeChunk();
   }
     
 }
@@ -160,6 +159,7 @@ class Consumer implements Runnable{
           
           if (e.getActionCommand().equals("x")) {
             isPlaying = false;
+            setPlaying(false);
           }
             
          
@@ -244,6 +244,11 @@ class Consumer implements Runnable{
     
     public AudioInputStream getStream() {
       return s;
+    }
+
+    public void setPlaying(boolean status){
+
+    	isPlaying = status;
     }
     
     public boolean isPlaying() {
