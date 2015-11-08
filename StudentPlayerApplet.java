@@ -72,7 +72,7 @@ class Producer implements Runnable {
     int bytesRead = 0;
     
     // Keep reading until no more audio or player stopped
-    while (bytesRead != -1 && player.isPlaying()) {
+    while (bytesRead != -1 && (player.isPlaying())) {
       
       // Create a new chunk of correct size
       byte[] chunk = new byte[player.sizeOneSecond()];
@@ -140,6 +140,11 @@ class Consumer implements Runnable{
     private boolean isPlaying;
     private boolean finished;
 
+    //extra features
+    private FloatControl volume;
+    private float volumeValue = 1000.0f;
+    private float lastVolumeValue = volumeValue;
+
     public Player(String filename) {
 
       font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
@@ -157,8 +162,41 @@ class Consumer implements Runnable{
         public void actionPerformed(ActionEvent e) {
           textarea.append("You said: " + e.getActionCommand() + "\n");
           
-          if (e.getActionCommand().equals("x")) {
+          if (e.getActionCommand().equals("x")) {	//quit
             setPlaying(false);
+            setFinished(true);
+          }
+          else if(e.getActionCommand().equals("p")){	//pause
+
+          }
+          else if(e.getActionCommand().equals("r")){	//resume
+
+          }
+          else if(e.getActionCommand().equals("q")){	//volume up
+
+          	if(volumeValue < 100){
+
+          		volumeValue += 10;
+          		volume.setValue(volumeValue);
+          		textarea.append("Volume: " + volumeValue + "\n");
+          	}
+          }
+          else if(e.getActionCommand().equals("a")){	//volume down
+
+          	if(volumeValue > 0){
+
+          		volumeValue -= 10;
+          		volume.setValue(volumeValue);
+          		textarea.append("Volume: " + volumeValue + "\n");
+          	}
+          }
+          else if(e.getActionCommand().equals("m")){	//mute
+
+          	
+          }
+          else if(e.getActionCommand().equals("u")){	//unmute
+
+          	
           }
             
           textfield.setText("");
@@ -187,6 +225,9 @@ class Consumer implements Runnable{
         line = (SourceDataLine) AudioSystem.getLine(info);
         line.open(format);
         line.start();
+
+        volume = (FloatControl)line.getControl(FloatControl.Type.VOLUME);
+        volume.setValue(volumeValue);
       }
       catch (LineUnavailableException e){
           
@@ -201,7 +242,8 @@ class Consumer implements Runnable{
         e.printStackTrace();
       }
       
-      isPlaying = true;
+      setPlaying(true);
+      setFinished(false);
 
       Thread producer = new Thread(new Producer(this));
       Thread consumer = new Thread(new Consumer(this));
