@@ -140,9 +140,6 @@ class Consumer implements Runnable{
     private boolean isPlaying;
     private boolean finished;
 
-    private Thread producer;
-    private Thread consumer;
-
     public Player(String filename) {
 
       font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
@@ -209,8 +206,8 @@ class Consumer implements Runnable{
       
       isPlaying = true;
 
-      producer = new Thread(new Producer(this));
-      consumer = new Thread(new Consumer(this));
+      Thread producer = new Thread(new Producer(this));
+      Thread consumer = new Thread(new Consumer(this));
                                    
       producer.start();
       consumer.start();
