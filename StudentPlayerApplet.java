@@ -140,6 +140,9 @@ class Consumer implements Runnable{
     private boolean isPlaying;
     private boolean finished;
 
+    private Thread producer;
+    private Thread consumer;
+
     public Player(String filename) {
 
       font = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
@@ -155,17 +158,20 @@ class Consumer implements Runnable{
 
       textfield.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          textarea.append("You said: " + e.getActionCommand() + "\n");
-          
-          if (e.getActionCommand().equals("x")) {
-            setPlaying(false);
+          String cmd = e.getActionCommand().toLowerCase();
+
+          if (cmd.equals("x")) {
+          	textarea.append("Command received: halt playback\n");
+          	setPlaying(false);
           }
-            
-          textfield.setText("");
+          else textarea.append("Unrecognised command\n");
+
+          textfield.setText("\0");
         }
       });
 
       this.filename = filename;
+      
       new Thread(this).start();
     }
     
@@ -174,7 +180,7 @@ class Consumer implements Runnable{
       try{
         s = AudioSystem.getAudioInputStream(new File(filename));
         format = s.getFormat();     
-        System.out.println("Audio format: " + format.toString());
+        textarea.append("Audio format: " + format.toString() + "\n");
 
         oneSecond = (int) (format.getChannels() * format.getSampleRate() * 
              format.getSampleSizeInBits() / 8);
@@ -203,14 +209,13 @@ class Consumer implements Runnable{
       
       isPlaying = true;
 
-      Thread producer = new Thread(new Producer(this));
-      Thread consumer = new Thread(new Consumer(this));
+      producer = new Thread(new Producer(this));
+      consumer = new Thread(new Consumer(this));
                                    
       producer.start();
       consumer.start();
       
       try{
-      
         producer.join();
         consumer.join();
       }
@@ -222,6 +227,8 @@ class Consumer implements Runnable{
       line.drain();
       line.stop();
       line.close();
+
+      System.exit(0);
     }
     
     public BoundedBuffer getBuffer(){
