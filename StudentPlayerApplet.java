@@ -63,6 +63,7 @@ class BoundedBuffer {
 		return ins == outs;
 	}
 
+	// Resets bounded buffer
 	public synchronized void clean() {
 		nextIn = nextOut = ins = outs = 0;
 		dataAvailable = false;
@@ -119,7 +120,7 @@ class Consumer implements Runnable {
 
 	public void run() {
 		// Only try to read when the player is playing and audio isn't finished
-		while(player.isPlaying() && !player.isFinished()) {
+		while (player.isPlaying() && !player.isFinished()) {
 			byte[] data = buffer.removeChunk();
 			// Pass data to audio device
 			line.write(data, 0, data.length);
@@ -237,7 +238,7 @@ class Player extends Panel implements Runnable {
 		line.stop();
 		line.close();
 
-		System.exit(0);
+		print("Main thread: bye bye\n");
 	}
 
 	public BoundedBuffer getBuffer() {
