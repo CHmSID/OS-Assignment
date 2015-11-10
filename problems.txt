@@ -1,0 +1,7 @@
+Povilas Auskalnis 13346476
+Mohammed Al Marhoon 13107704
+Jerzy Baran 13307086
+
+When you terminate the audio the audio only stops playing after the last one second chunk is done.
+If the format/codecs of the audio is not supported, exceptions will be thrown.
+The textfield doesn't clear after inputting a command.
