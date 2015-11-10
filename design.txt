@@ -1,0 +1,8 @@
+Povilas Auskalnis 13346476
+Mohammed Al Marhoon 13107704
+Jerzy Baran 13307086
+
+We use a 2 dimensional array as a collection of our buffers.
+The Producer thread keeps reading data into the buffer until the buffer is full.
+The Consumer takes out data from buffer while there is data in the buffer.
+At the end of the playback(or when 'x' is inputted), buffer is cleaned to notify the Producer there is no more work to do. Consumer terminates itself without any help.
